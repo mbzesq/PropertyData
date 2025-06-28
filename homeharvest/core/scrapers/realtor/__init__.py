@@ -496,7 +496,11 @@ class RealtorScraper(Scraper):
         assessed_value = self.get_key(result, ["taxHistory", 0, "assessment", "total"])
         tax_history = self.get_key(result, ["taxHistory"])
 
-        schools = [school["district"]["name"] for school in schools if school["district"].get("name")]
+        # Ensure schools is iterable and handle empty/non-list cases
+        if schools and isinstance(schools, (list, tuple)):
+            schools = [school["district"]["name"] for school in schools if school["district"].get("name")]
+        else:
+            schools = []
 
         # Process tax history
         latest_tax = None
