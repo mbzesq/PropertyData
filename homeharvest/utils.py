@@ -110,7 +110,22 @@ def process_result(result: Property) -> pd.DataFrame:
             prop_data["office_mls_set"] = office_data.mls_set
 
     prop_data["price_per_sqft"] = prop_data["prc_sqft"]
-    prop_data["nearby_schools"] = filter(None, prop_data["nearby_schools"]) if prop_data["nearby_schools"] else None
+    nearby_schools = prop_data.get("nearby_schools")
+    if nearby_schools is not None:
+        # Handle different data types safely
+        if isinstance(nearby_schools, (pd.Series, pd.Index)):
+            # Convert pandas objects to list and filter out None/empty values
+            schools_list = [school for school in nearby_schools.tolist() if school and pd.notna(school)]
+            prop_data["nearby_schools"] = schools_list if schools_list else None
+        elif isinstance(nearby_schools, (list, tuple)):
+            # Handle regular lists/tuples
+            schools_list = [school for school in nearby_schools if school and school != ""]
+            prop_data["nearby_schools"] = schools_list if schools_list else None
+        else:
+            # Handle single values or other types
+            prop_data["nearby_schools"] = None
+    else:
+        prop_data["nearby_schools"] = None
     prop_data["nearby_schools"] = ", ".join(set(prop_data["nearby_schools"])) if prop_data["nearby_schools"] else None
 
     description = result.description
