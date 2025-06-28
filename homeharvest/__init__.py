@@ -65,7 +65,11 @@ def scrape_property(
     if scraper_input.return_type != ReturnType.pandas:
         return results
 
-    properties_dfs = [df for result in results if not (df := process_result(result)).empty]
+    properties_dfs = []
+    for result in results:
+        df = process_result(result)
+        if not df.empty:
+            properties_dfs.append(df)
     if not properties_dfs:
         return pd.DataFrame()
 
