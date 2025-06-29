@@ -10,7 +10,7 @@ import pytesseract
 app = Flask(__name__)
 
 # Load the trained document classification model on startup
-MODEL_PATH = "projects/doc_classifier_model.joblib"
+MODEL_PATH = "nplvision/projects/doc_classifier_model.joblib"
 doc_model = None
 try:
     doc_model = joblib.load(MODEL_PATH)
