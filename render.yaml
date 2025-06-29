@@ -4,6 +4,6 @@ services:
     env: python
     plan: free # Or your current plan
     buildCommand: |
-      apt-get update && apt-get install -y poppler-utils
+      apt-get update && apt-get install -y poppler-utils tesseract-ocr
       pip install -r requirements.txt
     startCommand: gunicorn app:app
