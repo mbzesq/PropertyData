@@ -1,13 +1,9 @@
 services:
   - type: web
     name: nplvision-propertydata-api
-    env: python
+    env: docker
     plan: free
-    buildCommand: |
-      apt-get update
-      apt-get install -y poppler-utils tesseract-ocr
-      pip install -r requirements.txt
-    startCommand: gunicorn app:app
+    dockerfilePath: ./Dockerfile
     envVars:
-      - key: TESSDATA_PREFIX
-        value: /usr/share/tesseract-ocr/4.00/tessdata
+      - key: PYTHON_VERSION
+        value: 3.9
